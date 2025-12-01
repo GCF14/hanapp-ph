@@ -1,39 +1,92 @@
+# Dependencies
 node_modules
-.nx/cache
-.nx/workspace-data
-dist
-.next
-out
-coverage
-.git
-.github
-.vscode
-.cursor
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.npm
+.yarn
 
-# Test files
+# Build output
+dist
+.next
+out
+build
+
+# Nx cache
+.nx/cache
+.nx/workspace-data
+
+# Testing
+coverage
 **/*.spec.ts
 **/*.test.ts
 **/*.spec.tsx
 **/*.test.tsx
 **/specs/
 **/__tests__/
+test-output
+
+# E2E
+apps/*-e2e
+apps/api-e2e
+apps/landing-e2e
+apps/web-e2e
 cypress
 cypress.config.ts
-jest.config.*
+**/cypress.env.json
 
-# E2E apps
-apps/*-e2e
+# Development tools
+.vscode
+.cursor
+.idea
+.github
+.git
+.gitignore
 
 # Documentation
 docs
 *.md
 !README.md
+LICENSE
 
 # Environment files
 .env
 .env*.local
-cypress.env.json
+**/.env
+**/.env.local
+!.env.example
+!.env.template
+
+# Configs not needed in container
+.editorconfig
+.prettierrc
+.prettierignore
+.eslintrc*
+.eslintignore
+jest.config.*
+jest.preset.*
+tsconfig.spec.json
+**/tsconfig.spec.json
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Apps we don't need for API deployment
+apps/web
+apps/landing
+
+# Scripts not needed in production
+scripts

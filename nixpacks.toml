@@ -1,3 +1,6 @@
+# This file is kept for reference but Railway will use Dockerfile instead
+# To use Dockerfile, make sure Railway is configured to use Docker buildpacks
+
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
