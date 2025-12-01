@@ -12,8 +12,7 @@ COPY apps/api ./apps/api
 COPY libs ./libs
 
 # Install all dependencies
-RUN --mount=type=cache,id=npm-build,target=/root/.npm \
-    npm ci --legacy-peer-deps --ignore-scripts
+RUN npm ci --legacy-peer-deps --ignore-scripts
 
 # Build using the npm script
 RUN cd apps/api && npx webpack-cli build --node-env=production
@@ -30,8 +29,7 @@ RUN apk add --no-cache dumb-init
 COPY package*.json ./
 
 # Install ONLY production runtime dependencies
-RUN --mount=type=cache,id=npm-prod,target=/root/.npm \
-    npm ci --legacy-peer-deps --omit=dev --ignore-scripts && \
+RUN npm ci --legacy-peer-deps --omit=dev --ignore-scripts && \
     npm cache clean --force
 
 # Copy built application from builder
