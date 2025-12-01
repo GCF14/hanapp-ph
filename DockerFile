@@ -1,0 +1,41 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
+
+# Install all dependencies
+RUN npm ci --legacy-peer-deps
+
+# Copy source code
+COPY apps ./apps
+COPY libs ./libs
+
+# Build the API using Nx
+RUN npx nx build @hanapp-ph/api --prod
+
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production --legacy-peer-deps
+
+# Copy built application from builder
+COPY --from=builder /app/dist/apps/api ./dist/apps/api
+
+# Expose port (Railway sets PORT env var automatically)
+EXPOSE 3001
+
+ENV NODE_ENV=production
+
+# Start the application
+CMD ["node", "dist/apps/api/main.js"]
