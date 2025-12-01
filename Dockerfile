@@ -22,9 +22,8 @@ COPY libs ./libs
 # Install ALL dependencies (needed for build)
 RUN npm ci --legacy-peer-deps --ignore-scripts
 
-# Copy source code
+# Copy source code (includes src/msg and src/assets)
 COPY apps/api/src ./apps/api/src
-COPY apps/api/msg ./apps/api/msg
 
 # Build the API with Nx
 RUN npx nx build @hanapp-ph/api --prod --verbose
@@ -49,9 +48,6 @@ RUN npm ci --legacy-peer-deps --omit=dev --ignore-scripts && \
 
 # Copy built application from builder stage
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
-
-# Copy any necessary assets
-COPY --from=builder /app/apps/api/msg ./apps/api/msg
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \

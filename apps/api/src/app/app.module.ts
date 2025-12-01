@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { MsgModule } from '../msg/msg.module';
+import { MsgModule } from './msg/msg.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
