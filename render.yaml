@@ -6,6 +6,7 @@ services:
     branch: main
     dockerfilePath: ./Dockerfile
     dockerContext: ./
+    rootDir: .
     envVars:
       - key: NODE_ENV
         value: production
