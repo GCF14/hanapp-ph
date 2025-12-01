@@ -17,7 +17,6 @@ A modern fullstack application built with Next.js, NestJS, and Supabase.
 
 - Node.js 20.x or later
 - npm 10.x or later
-- Docker (optional, for containerization)
 
 ## Development Setup
 
@@ -92,14 +91,6 @@ npm run build:web
 npm run build:api
 ```
 
-## 🐳 Docker
-
-```bash
-# Build Docker image
-npm run docker:build
-
-# Run containerized application
-npm run docker:run
 ```
 
 ## 📁 Project Structure
