@@ -1,0 +1,5 @@
+{
+  "installCommand": "npm install --legacy-peer-deps --workspaces",
+  "buildCommand": "npx nx build @hanapp-ph/web",
+  "framework": "nextjs"
+}
