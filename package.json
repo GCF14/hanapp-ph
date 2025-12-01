@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/apps/api/main",
     "start:dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "start:api": "node dist/apps/api/main.js",
     "dev:web": "nx serve @hanapp-ph/web --turbo",
     "dev:web:webpack": "nx serve @hanapp-ph/web",
     "dev:landing": "nx dev @hanapp-ph/landing",
