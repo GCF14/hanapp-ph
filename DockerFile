@@ -32,7 +32,7 @@ RUN npm ci --only=production --legacy-peer-deps
 # Copy built application from builder
 COPY --from=builder /app/dist/apps/api ./dist/apps/api
 
-# Expose port (Railway sets PORT env var automatically)
+# Expose port
 EXPOSE 3001
 
 ENV NODE_ENV=production
