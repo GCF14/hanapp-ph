@@ -10,7 +10,7 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 
 # Install dependencies with cache mount for faster builds
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,id=npm-cache,target=/root/.npm \
     npm ci --legacy-peer-deps --ignore-scripts --prefer-offline
 
 # Copy only what's needed for the build
@@ -19,7 +19,7 @@ COPY apps/api ./apps/api
 COPY libs ./libs
 
 # Build the API with Nx (with cache mount)
-RUN --mount=type=cache,target=/app/.nx/cache \
+RUN --mount=type=cache,id=nx-cache,target=/app/.nx/cache \
     npx nx build @hanapp-ph/api --prod --skip-nx-cache=false
 
 # Stage 2: Production runtime image
@@ -34,7 +34,7 @@ RUN apk add --no-cache dumb-init
 COPY package*.json ./
 
 # Install ONLY production dependencies with cache
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,id=npm-prod-cache,target=/root/.npm \
     npm ci --legacy-peer-deps --omit=dev --ignore-scripts --prefer-offline && \
     npm cache clean --force
 
