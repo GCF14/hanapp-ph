@@ -1,0 +1,39 @@
+{
+  "name": "@hanapp-ph/web-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": [],
+  "sourceRoot": "apps/web-e2e/src",
+  "projectType": "application",
+  "tags": ["type:e2e", "scope:web"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/web-e2e/cypress.config.ts",
+        "devServerTarget": "@hanapp-ph/web:serve:development",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "@hanapp-ph/web:serve:production"
+        },
+        "ci": {
+          "baseUrl": "http://localhost:3000"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit --project apps/web-e2e/tsconfig.json"
+      }
+    }
+  }
+}

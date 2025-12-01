@@ -1,0 +1,11 @@
+{
+  "name": "@hanapp-ph/web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "@hanapp-ph/web-e2e",
+    "implicitDependencies": [
+      "@hanapp-ph/web"
+    ]
+  }
+}
