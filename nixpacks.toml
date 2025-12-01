@@ -2,10 +2,20 @@
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["npm ci --legacy-peer-deps"]
+cmds = [
+  "npm ci --legacy-peer-deps --production=false",
+  "npx nx reset"
+]
 
 [phases.build]
-cmds = ["npx nx build @hanapp-ph/api --prod"]
+cmds = [
+  "npx nx build @hanapp-ph/api --prod --verbose",
+  "npm prune --omit=dev --legacy-peer-deps"
+]
 
 [start]
 cmd = "node apps/api/dist/main.js"
+
+[variables]
+NX_DAEMON = "false"
+NX_CLOUD_DISTRIBUTED_EXECUTION = "false"
