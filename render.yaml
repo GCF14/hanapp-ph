@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: hanapp-api
+    runtime: docker
+    repo: https://github.com/GCF14/hanapp-ph
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    plan: free
+    healthCheckPath: /
+    autoDeploy: true
