@@ -1,41 +1,36 @@
-# Build stage
+# ========================
+# 1. Builder stage
+# ========================
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
-# Copy package files
+# Install dependencies
 COPY package*.json ./
-COPY nx.json ./
 COPY tsconfig*.json ./
-
-# Install all dependencies
-RUN npm ci --legacy-peer-deps
-
-# Copy source code
+COPY nx.json ./
 COPY apps ./apps
 COPY libs ./libs
 
-# Build the API using Nx
+RUN npm ci --legacy-peer-deps
+
+# Build only the API project
 RUN npx nx build @hanapp-ph/api --prod
 
-# Production stage
-FROM node:20-alpine
+# ------------------------
+# 2. Prune workspace (optional but recommended)
+# ------------------------
+RUN npx nx prune --project @hanapp-ph/api
 
+# ========================
+# 3. Production image
+# ========================
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy pruned output produced in: apps/api/dist
+COPY --from=builder /app/apps/api/dist ./dist
 
-# Install only production dependencies
-RUN npm ci --only=production --legacy-peer-deps
+WORKDIR /app/dist
+EXPOSE 3000
 
-# Copy built application from builder
-COPY --from=builder /app/dist/apps/api ./dist/apps/api
-
-# Expose port
-EXPOSE 3001
-
-ENV NODE_ENV=production
-
-# Start the application
-CMD ["node", "dist/apps/api/main.js"]
+CMD ["node", "main.js"]
