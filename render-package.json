@@ -1,0 +1,14 @@
+{
+  "name": "@hanapp-ph/api-render",
+  "version": "1.0.0",
+  "description": "Render-specific deployment configuration for HanApp API",
+  "scripts": {
+    "render:build": "npm ci --legacy-peer-deps && cd apps/api && npx webpack-cli build --node-env=production",
+    "render:start": "node apps/api/dist/main.js",
+    "render:health": "curl -f http://localhost:${PORT:-10000}/api || exit 1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

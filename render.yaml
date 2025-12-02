@@ -1,17 +1,36 @@
+# Render.com Blueprint Configuration
+# This file enables one-click deployment from Render dashboard
+
 services:
+  # API Service
   - type: web
     name: hanapp-api
     runtime: docker
-    repo: https://github.com/GCF14/hanapp-ph
-    branch: main
+    plan: free
+    region: oregon
+    
+    # Docker configuration
     dockerfilePath: ./Dockerfile
     dockerContext: ./
-    rootDir: .
+    
+    # Environment variables
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000
-    plan: free
-    healthCheckPath: /
+        value: 10000
+      - key: DATABASE_URL
+        sync: false  # Set this in Render dashboard
+      - key: SUPABASE_URL
+        sync: false  # Set this in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false  # Set this in Render dashboard
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false  # Set this in Render dashboard
+    
+    # Health check
+    healthCheckPath: /api
+    
+    # Auto-deploy on push to main
     autoDeploy: true
+    branch: main
