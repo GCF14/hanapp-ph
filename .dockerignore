@@ -61,6 +61,17 @@ apps/landing-e2e
 # E2E test apps
 apps/api-e2e
 
+# Exclude all spec/test files more aggressively
+**/*.spec.ts
+**/*.spec.js
+**/*.test.ts
+**/*.test.js
+**/test/**
+**/tests/**
+**/__tests__/**
+**/__mocks__/**
+**/specs/**
+
 # Documentation
 *.md
 !README.md

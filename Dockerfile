@@ -9,13 +9,15 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install build dependencies (needed for native npm packages)
-RUN apk add --no-cache python3 make g++
+# Use --no-cache to avoid storing unnecessary package indexes
+RUN apk add --no-cache --virtual .build-deps python3 make g++
 
 # Copy package files for dependency installation
 COPY package*.json ./
 
 # Install ALL dependencies (including devDependencies needed for build)
-RUN npm ci --legacy-peer-deps --prefer-offline
+# Use --prefer-offline and increase network timeout for faster resolution
+RUN npm ci --legacy-peer-deps --prefer-offline --no-audit --no-fund
 
 # Copy workspace configuration files
 COPY nx.json tsconfig*.json ./
@@ -24,9 +26,11 @@ COPY nx.json tsconfig*.json ./
 COPY apps/api ./apps/api
 COPY libs ./libs
 
-# Build the API using webpack
+# Build the API using webpack with optimizations
 WORKDIR /app/apps/api
-RUN npx webpack-cli build --node-env=production
+# Skip Nx cloud cache checks in Docker builds
+ENV NX_SKIP_NX_CACHE=true
+RUN npx webpack-cli build --node-env=production --mode=production
 
 # Verify build succeeded
 RUN ls -la dist/ && test -f dist/main.js
@@ -45,7 +49,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install ONLY production dependencies
-RUN npm ci --legacy-peer-deps --omit=dev --prefer-offline && \
+# Skip audit/fund for faster installs
+RUN npm ci --legacy-peer-deps --omit=dev --prefer-offline --no-audit --no-fund && \
     npm cache clean --force
 
 # Copy built application from builder stage
