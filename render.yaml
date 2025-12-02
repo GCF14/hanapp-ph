@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: hanapp-ph-api
+    runtime: docker
+    repo: https://github.com/GCF14/hanapp-ph
+    region: oregon
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    healthCheckPath: /api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://dizeqovrulmgtbnseosd.supabase.co
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SEMAPHORE_API_KEY
+        value: e713e97b7dcb1c30eb9dab7cce1f833a
+      - key: FRONTEND_URL_WEB
+        sync: false
